@@ -456,6 +456,189 @@ dialog::backdrop {
   font-weight: 800;
 }
 
+.admin-shell {
+  width: min(1240px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+.admin-header,
+.admin-login,
+.admin-workspace,
+.official-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 50px rgba(23, 32, 27, 0.08);
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 22px;
+}
+
+.admin-header p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.text-link {
+  color: var(--forest);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.admin-login {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+  padding: 18px;
+}
+
+.admin-login.compact-login {
+  box-shadow: none;
+}
+
+.admin-workspace {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  min-height: 720px;
+  overflow: hidden;
+}
+
+.shoe-sidebar {
+  border-right: 1px solid var(--line);
+  background: #f7faf8;
+  padding: 16px;
+}
+
+.shoe-list {
+  display: grid;
+  gap: 8px;
+  max-height: 640px;
+  margin-top: 14px;
+  overflow: auto;
+}
+
+.shoe-list-item {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-height: 0;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+  padding: 12px;
+  text-align: left;
+}
+
+.shoe-list-item span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.shoe-list-item.active {
+  border-color: var(--forest);
+  background: #edf4f1;
+}
+
+.editor-panel {
+  padding: 18px;
+}
+
+.editor-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.official-card {
+  margin-bottom: 16px;
+  padding: 18px;
+  box-shadow: none;
+}
+
+.official-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.official-grid div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.official-grid dd {
+  overflow-wrap: anywhere;
+}
+
+.full-field {
+  margin-top: 14px;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 16px;
+}
+
+.checkbox-group label,
+.validation-check {
+  display: flex;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  min-height: 18px;
+}
+
+.validation-check {
+  margin-top: 14px;
+  font-weight: 800;
+}
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 10;
+  max-width: min(420px, calc(100% - 36px));
+  border-radius: 8px;
+  background: var(--forest-dark);
+  color: white;
+  padding: 13px 15px;
+  font-weight: 800;
+  box-shadow: 0 16px 40px rgba(23, 32, 27, 0.22);
+}
+
 @media (max-width: 880px) {
   .app-shell {
     grid-template-columns: 1fr;
@@ -469,6 +652,19 @@ dialog::backdrop {
 
   .results-panel {
     min-height: 400px;
+  }
+
+  .admin-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .shoe-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .shoe-list {
+    max-height: 340px;
   }
 }
 
@@ -487,8 +683,16 @@ dialog::backdrop {
 
   .control-grid,
   .quick-facts,
-  .library-row {
+  .library-row,
+  .official-grid,
+  .admin-login {
     grid-template-columns: 1fr;
+  }
+
+  .admin-header,
+  .editor-title {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .shoe-card {

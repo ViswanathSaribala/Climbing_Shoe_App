@@ -1,10 +1,10 @@
 const fs = require("fs");
 
-const dataPath = "data/shoes.json";
+const dataPath = "data/shoes.local.json";
 const data = JSON.parse(fs.readFileSync(dataPath, "utf8"));
 
 if (data.schema_version === "1.0") {
-  console.log("data/shoes.json is already using schema 1.0. No migration needed.");
+  console.log("data/shoes.local.json is already using schema 1.0. No migration needed.");
   process.exit(0);
 }
 

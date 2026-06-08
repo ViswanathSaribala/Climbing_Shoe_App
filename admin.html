@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advisor Notes Admin</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div>
+          <p class="eyebrow">Private Editor</p>
+          <h1>Advisor Fit Notes</h1>
+          <p>Review official shoe data and update your private advisor insights.</p>
+        </div>
+        <a class="text-link" href="/">Advisor app</a>
+      </header>
+
+      <section class="admin-login" id="login-panel">
+        <label>
+          Admin token
+          <input id="admin-token" type="password" autocomplete="current-password" placeholder="Paste your ADMIN_TOKEN" />
+        </label>
+        <button id="load-shoes" type="button">Load Shoes</button>
+      </section>
+
+      <section class="admin-workspace" id="admin-workspace" hidden>
+        <aside class="shoe-sidebar">
+          <label>
+            Search
+            <input id="shoe-search" type="search" placeholder="Brand or model" />
+          </label>
+          <div id="shoe-list" class="shoe-list"></div>
+        </aside>
+
+        <section class="editor-panel">
+          <div id="editor-empty" class="results-empty">Select a shoe to edit advisor notes.</div>
+          <form id="shoe-editor" hidden>
+            <div class="editor-title">
+              <div>
+                <p class="eyebrow">Selected Shoe</p>
+                <h2 id="editor-heading"></h2>
+              </div>
+              <button type="submit">Save Notes</button>
+            </div>
+
+            <section class="official-card">
+              <h3>Official Data</h3>
+              <dl id="official-data" class="official-grid"></dl>
+            </section>
+
+            <section class="official-card">
+              <h3>Advisor Insights</h3>
+              <div class="control-grid">
+                <label>
+                  Foot width
+                  <select name="foot_width">
+                    <option value="unknown">Unknown</option>
+                    <option value="narrow">Narrow</option>
+                    <option value="medium">Medium</option>
+                    <option value="medium-wide">Medium-wide</option>
+                    <option value="wide">Wide</option>
+                  </select>
+                </label>
+                <label>
+                  Foot volume
+                  <select name="foot_volume">
+                    <option value="unknown">Unknown</option>
+                    <option value="low">Low</option>
+                    <option value="low-medium">Low-medium</option>
+                    <option value="medium">Medium</option>
+                    <option value="medium-high">Medium-high</option>
+                    <option value="high">High</option>
+                  </select>
+                </label>
+                <label>
+                  Heel fit
+                  <input name="heel_fit" type="text" placeholder="e.g. secure, roomy, narrow heel cup" />
+                </label>
+                <label>
+                  Fit confidence
+                  <select name="fit_confidence">
+                    <option value="unknown">Unknown</option>
+                    <option value="estimated">Estimated</option>
+                    <option value="researched">Researched</option>
+                    <option value="tested">Tested</option>
+                  </select>
+                </label>
+                <label>
+                  Comfort offset EU
+                  <input name="comfort" type="number" step="0.5" placeholder="-0.5" />
+                </label>
+                <label>
+                  Performance offset EU
+                  <input name="performance" type="number" step="0.5" placeholder="-1" />
+                </label>
+                <label>
+                  Aggressive offset EU
+                  <input name="aggressive" type="number" step="0.5" placeholder="-1.5" />
+                </label>
+                <label>
+                  Source type
+                  <select name="source_type">
+                    <option value="unknown">Unknown</option>
+                    <option value="estimated">Estimated</option>
+                    <option value="researched">Researched</option>
+                    <option value="tested">Tested</option>
+                    <option value="shop_fit">Shop fit</option>
+                    <option value="user_feedback">User feedback</option>
+                  </select>
+                </label>
+              </div>
+
+              <fieldset class="checkbox-group">
+                <legend>Toe shape fit</legend>
+                <label><input type="checkbox" name="toe_shape_fit" value="egyptian" /> Egyptian</label>
+                <label><input type="checkbox" name="toe_shape_fit" value="greek" /> Greek</label>
+                <label><input type="checkbox" name="toe_shape_fit" value="roman-square" /> Roman / square</label>
+                <label><input type="checkbox" name="toe_shape_fit" value="unknown" /> Unknown</label>
+              </fieldset>
+
+              <label class="full-field">
+                Summary
+                <textarea name="summary" rows="5" placeholder="Write the practical advisor note for this shoe..."></textarea>
+              </label>
+
+              <label class="validation-check">
+                <input name="needs_validation" type="checkbox" />
+                Needs validation
+              </label>
+            </section>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" hidden></div>
+    <script src="src/admin.js"></script>
+  </body>
+</html>

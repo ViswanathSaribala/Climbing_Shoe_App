@@ -7,6 +7,19 @@ The shoe database is split into two sections for each shoe:
 
 Keep these separate. Official specs are not the same thing as real-world fit advice.
 
+## Privacy Model
+
+Do not commit full shoe datasets to the public repository.
+
+Use:
+
+- `data/shoes.local.json` for private local seed/import data.
+- Supabase `shoes` table as the deployed source of truth.
+- `/api/recommend` for public recommendations.
+- `/admin.html` for protected browser editing.
+
+The public app should never fetch a raw JSON shoe database.
+
 ## Official Data
 
 Use official brand sources for:
@@ -58,12 +71,14 @@ Use `needs_validation: true` until the fit notes are backed by testing, reliable
 
 ## Recommended Workflow
 
-1. Add official product facts first.
+1. Add official product facts in Supabase or a private local seed file.
 2. Add the official product URL.
 3. Mark official data confidence.
-4. Add advisor fit notes separately.
-5. Mark fit confidence honestly.
-6. Keep `needs_validation: true` for any shoe that has not been tested.
+4. Open `/admin.html`.
+5. Load shoes with your admin token.
+6. Add advisor fit notes in the form.
+7. Mark fit confidence honestly.
+8. Keep `needs_validation: true` for any shoe that has not been tested.
 
 ## Why This Matters
 
