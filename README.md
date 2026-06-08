@@ -105,6 +105,22 @@ The highest-scoring shoes are normalized into match percentages and shown as rec
 
 Because this is a static web app, the easiest way to let people use it without running code is GitHub Pages.
 
+## Push To GitHub
+
+Create an empty repository on GitHub first. Then copy its repository URL and run:
+
+```bash
+git remote add origin https://github.com/your-username/your-repository-name.git
+git push -u origin main
+```
+
+If you use SSH instead of HTTPS:
+
+```bash
+git remote add origin git@github.com:your-username/your-repository-name.git
+git push -u origin main
+```
+
 ### GitHub Pages
 
 1. Push this project to a GitHub repository.
