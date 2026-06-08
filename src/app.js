@@ -9,155 +9,46 @@ const closeLibrary = document.querySelector("#close-library");
 
 let shoes = [];
 
-const fitKnowledge = {
-  "la sportiva solution": {
-    width: "medium",
-    volume: "medium-high",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -1, performance: -1.5, aggressive: -2 },
-    notes: "Powerful bouldering and sport shoe with a structured heel and aggressive shape."
-  },
-  "la sportiva theory": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "roman-square"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Very soft indoor and competition-style shoe for volumes, smears, and dynamic climbing."
-  },
-  "la sportiva mantra": {
-    width: "medium",
-    volume: "low-medium",
-    toeShapes: ["egyptian", "roman-square"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Extremely sensitive slipper for modern indoor climbing and friction-based movement."
-  },
-  "la sportiva tc pro": {
-    width: "medium",
-    volume: "medium-high",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Supportive flat shoe for edging, cracks, trad, and long outdoor routes."
-  },
-  "la sportiva miura": {
-    width: "narrow",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -1, performance: -1.5, aggressive: -2 },
-    notes: "Technical edging shoe for vertical and outdoor sport climbing."
-  },
-  "la sportiva katana lace": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Precise all-round outdoor shoe with strong edging support."
-  },
-  "la sportiva kubo": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "roman-square"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Approachable all-rounder for gym climbing, bouldering, and sport climbing."
-  },
-  "la sportiva finale": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: 0, performance: -0.5, aggressive: -1 },
-    notes: "Comfortable beginner and all-day shoe with supportive construction."
-  },
-  "la sportiva tarantulace": {
-    width: "medium-wide",
-    volume: "medium-high",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: 0, performance: -0.5, aggressive: -1 },
-    notes: "Beginner-friendly gym and training shoe with forgiving fit."
-  },
-  "la sportiva mythos eco": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: 0, performance: -0.5, aggressive: -1 },
-    notes: "Comfort-focused trad and multipitch shoe."
-  },
-  "scarpa drago lv": {
-    width: "narrow",
-    volume: "low",
-    toeShapes: ["egyptian", "roman-square"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Low-volume, very soft bouldering and competition shoe."
-  },
-  "scarpa instinct vs men's": {
-    width: "medium-wide",
-    volume: "medium-high",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -1, performance: -1.5, aggressive: -2 },
-    notes: "Powerful bouldering and sport shoe with strong support."
-  },
-  "scarpa instinct": {
-    width: "medium-wide",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Balanced performance shoe for bouldering and sport climbing."
-  },
-  "scarpa instinct vsr": {
-    width: "medium-wide",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: -1, performance: -1.5, aggressive: -2 },
-    notes: "Softer Instinct variant for bouldering, indoor climbing, and sensitivity."
-  },
-  "scarpa vapor men's": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Versatile moderate shoe for sport climbing, edging, and gym use."
-  },
-  "scarpa vapor v lv": {
-    width: "narrow",
-    volume: "low",
-    toeShapes: ["egyptian", "greek"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Lower-volume versatile shoe with good edging and sport climbing range."
-  },
-  "scarpa helix men's new": {
-    width: "medium",
-    volume: "medium",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: 0, performance: -0.5, aggressive: -1 },
-    notes: "Comfortable beginner and long-session shoe."
-  },
-  "scarpa origin woman": {
-    width: "medium",
-    volume: "low-medium",
-    toeShapes: ["egyptian", "greek", "roman-square"],
-    sizing: { comfort: 0, performance: -0.5, aggressive: -1 },
-    notes: "Comfortable entry-level shoe for gym climbing."
-  },
-  "scarpa veloce": {
-    width: "wide",
-    volume: "medium-high",
-    toeShapes: ["roman-square", "egyptian"],
-    sizing: { comfort: -0.5, performance: -1, aggressive: -1.5 },
-    notes: "Soft and comfortable indoor shoe with a roomy forefoot."
-  }
-};
-
-function keyFor(shoe) {
-  return `${shoe.brand} ${shoe.model}`.toLowerCase();
-}
-
 function normalizeShoe(shoe) {
-  const fit = fitKnowledge[keyFor(shoe)] || {};
+  const official = shoe.official_data || {};
+  const fit = shoe.advisor_fit_notes || {};
+  const performance = official.performance_scores_1_to_5 || {};
+  const use = official.use_scores_1_to_5 || {};
+  const skill = official.skill_scores_1_to_5 || {};
+  const shape = official.shape || {};
+  const rubber = official.rubber || {};
+
   return {
     ...shoe,
-    fitWidth: fit.width || shoe.shop_width || "unknown",
-    fitVolume: fit.volume || shoe.shop_volume || "unknown",
-    toeShapes: fit.toeShapes || (shoe.shop_toe_shape ? [shoe.shop_toe_shape] : ["unknown"]),
-    sizing: fit.sizing || { comfort: 0, performance: -0.5, aggressive: -1 },
-    advisorNotes: fit.notes || shoe.shop_notes || shoe.official_notes || "No notes available yet."
+    gender_fit: official.gender_fit || shoe.gender_fit || "",
+    closure: official.closure || shoe.closure || "",
+    rubber_type: rubber.primary || shoe.rubber_type || "",
+    profile: shape.profile || shoe.profile || "",
+    asymmetry: shape.asymmetry || shoe.asymmetry || "",
+    stiffness: performance.stiffness ?? shoe.stiffness ?? 0,
+    sensitivity: performance.sensitivity ?? shoe.sensitivity ?? 0,
+    support: performance.support ?? shoe.support ?? 0,
+    bouldering: use.bouldering ?? shoe.bouldering ?? 0,
+    sport: use.sport ?? shoe.sport ?? 0,
+    indoor: use.indoor ?? shoe.indoor ?? 0,
+    outdoor: use.outdoor ?? shoe.outdoor ?? 0,
+    trad: use.trad ?? shoe.trad ?? 0,
+    multipitch: use.multipitch ?? shoe.multipitch ?? 0,
+    beginner: skill.beginner ?? shoe.beginner ?? 0,
+    intermediate: skill.intermediate ?? shoe.intermediate ?? 0,
+    advanced: skill.advanced ?? shoe.advanced ?? 0,
+    productUrl: official.product_url || shoe.source_url || "",
+    officialNotes: official.official_notes || shoe.official_notes || "",
+    officialConfidence: official.official_confidence || shoe.data_confidence || "unknown",
+    fitWidth: fit.foot_width || shoe.shop_width || "unknown",
+    fitVolume: fit.foot_volume || shoe.shop_volume || "unknown",
+    heelFit: fit.heel_fit || shoe.shop_heel_fit || "",
+    toeShapes: fit.toe_shape_fit || (shoe.shop_toe_shape ? [shoe.shop_toe_shape] : ["unknown"]),
+    sizing: fit.sizing_offsets_eu || { comfort: null, performance: null, aggressive: null },
+    advisorNotes: fit.summary || shoe.shop_notes || official.official_notes || "No notes available yet.",
+    fitConfidence: fit.fit_confidence || "unknown",
+    fitSourceType: fit.source_type || "unknown",
+    needsValidation: Boolean(fit.needs_validation)
   };
 }
 
@@ -311,6 +202,11 @@ function renderResults(matches, prefs) {
             <div><dt>Size start</dt><dd>${sizeAdvice(shoe, prefs.streetSize, prefs.fitPreference)}</dd></div>
           </dl>
           <p class="advisor-note">${shoe.advisorNotes}</p>
+          <div class="source-strip">
+            <span>Official data: ${shoe.officialConfidence}</span>
+            <span>Fit notes: ${shoe.fitConfidence}${shoe.needsValidation ? " · needs validation" : ""}</span>
+            ${shoe.productUrl ? `<a href="${shoe.productUrl}" target="_blank" rel="noreferrer">Official source</a>` : ""}
+          </div>
           <ul class="reason-list">
             ${match.reasons.map(reason => `<li>${reason}</li>`).join("")}
             ${match.cautions.map(caution => `<li class="caution">${caution}</li>`).join("")}
@@ -331,6 +227,7 @@ function renderLibrary() {
       <div class="library-tags">
         <span>${shoe.fitWidth}</span>
         <span>${shoe.fitVolume}</span>
+        <span>${shoe.fitConfidence}</span>
         <span>B ${shoe.bouldering}/5</span>
         <span>S ${shoe.sport}/5</span>
       </div>

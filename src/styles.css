@@ -349,6 +349,30 @@ dd {
   line-height: 1.5;
 }
 
+.source-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.source-strip span,
+.source-strip a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fffaf0;
+  color: #72551a;
+  padding: 6px 9px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.source-strip a {
+  background: #eef4f1;
+  color: var(--forest-dark);
+}
+
 .reason-list {
   display: flex;
   flex-wrap: wrap;

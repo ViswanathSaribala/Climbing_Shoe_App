@@ -23,7 +23,10 @@ The current version is a static MVP that runs in desktop and mobile browsers. It
 ├── index.html
 ├── README.md
 ├── data/
+│   ├── README.md
 │   └── shoes.json
+├── scripts/
+│   └── migrate-shoes-to-v1.js
 ├── src/
 │   ├── app.js
 │   └── styles.css
@@ -76,7 +79,14 @@ The app returns ranked shoe recommendations with match scores, sizing guidance, 
 
 The MVP uses `data/shoes.json`, a starter La Sportiva and Scarpa shoe dataset.
 
-Some fit data is still early and should be improved with real fitting research. The `research/` folder contains the original roadmap, schema/rules plan, and spreadsheet references for expanding the database.
+Each shoe separates:
+
+- `official_data`: product facts from official brand pages, catalogs, or product sheets.
+- `advisor_fit_notes`: practical fit interpretation from testing, shop knowledge, demos, reviews, or user feedback.
+
+Some fit data is still early and marked as `estimated` with `needs_validation: true`. Improve those fields with real fitting research before treating recommendations as reliable.
+
+See `data/README.md` for the data collection rules. The `research/` folder contains the original roadmap, schema/rules plan, and spreadsheet references for expanding the database.
 
 ## Recommendation Logic
 
