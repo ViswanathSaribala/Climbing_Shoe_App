@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Climbing Shoe Advisor</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="advisor-panel" aria-labelledby="app-title">
+        <div class="intro">
+          <div>
+            <p class="eyebrow">Climbing Shoe Advisor</p>
+            <h1 id="app-title">Find shoes that match your feet and climbing style.</h1>
+          </div>
+          <div class="mini-visual" aria-hidden="true">
+            <span class="hold hold-a"></span>
+            <span class="hold hold-b"></span>
+            <span class="shoe-shape"></span>
+          </div>
+        </div>
+
+        <form id="advisor-form" class="questionnaire">
+          <fieldset>
+            <legend>Your foot</legend>
+            <div class="control-grid">
+              <label>
+                Foot width
+                <select name="footWidth">
+                  <option value="medium">Medium</option>
+                  <option value="narrow">Narrow</option>
+                  <option value="medium-wide">Medium-wide</option>
+                  <option value="wide">Wide</option>
+                </select>
+              </label>
+              <label>
+                Foot volume
+                <select name="footVolume">
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                  <option value="low-medium">Low-medium</option>
+                  <option value="medium-high">Medium-high</option>
+                  <option value="high">High</option>
+                </select>
+              </label>
+              <label>
+                Toe shape
+                <select name="toeShape">
+                  <option value="egyptian">Egyptian</option>
+                  <option value="greek">Greek</option>
+                  <option value="roman-square">Roman / square</option>
+                  <option value="unknown">Not sure</option>
+                </select>
+              </label>
+              <label>
+                Street shoe size (EU)
+                <input name="streetSize" type="number" min="30" max="52" step="0.5" value="42" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your climbing</legend>
+            <div class="control-grid">
+              <label>
+                Main use
+                <select name="primaryUse">
+                  <option value="indoor_bouldering">Indoor bouldering</option>
+                  <option value="outdoor_bouldering">Outdoor bouldering</option>
+                  <option value="sport">Sport climbing</option>
+                  <option value="trad">Trad climbing</option>
+                  <option value="multipitch">Multipitch</option>
+                  <option value="all_round">All-round</option>
+                </select>
+              </label>
+              <label>
+                Experience
+                <select name="level">
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </label>
+              <label>
+                Shoe feel
+                <select name="shoeFeel">
+                  <option value="balanced">Balanced</option>
+                  <option value="soft">Soft rubber / friction</option>
+                  <option value="stiff">Stiff support / small holds</option>
+                </select>
+              </label>
+              <label>
+                Fit preference
+                <select name="fitPreference">
+                  <option value="performance">Performance</option>
+                  <option value="comfort">Comfort</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit">Get Recommendations</button>
+            <button type="button" id="reset-button" class="secondary">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="results-panel" aria-live="polite">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">Recommended Matches</p>
+            <h2 id="result-count">Ready when you are</h2>
+          </div>
+          <button id="show-library" class="secondary" type="button">Shoe Library</button>
+        </div>
+        <div id="results" class="results-empty">
+          Answer the questions and the advisor will rank shoes from the starter database.
+        </div>
+      </section>
+    </main>
+
+    <dialog id="library-dialog">
+      <div class="dialog-head">
+        <h2>Shoe Library</h2>
+        <button id="close-library" class="icon-button" aria-label="Close shoe library">×</button>
+      </div>
+      <div id="library-list" class="library-list"></div>
+    </dialog>
+
+    <script src="src/app.js"></script>
+  </body>
+</html>

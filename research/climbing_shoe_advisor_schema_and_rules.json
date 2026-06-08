@@ -1,0 +1,355 @@
+{
+  "schema_version": "1.1",
+  "project": "Climbing Shoe Advisor",
+  "description": "App-ready database schema and rule-based recommendation configuration for a climbing shoe advisor.",
+  "shoe_fields": {
+    "identity": [
+      "shoe_id",
+      "brand",
+      "model",
+      "gender_fit",
+      "version",
+      "official_product_url"
+    ],
+    "construction": [
+      "closure",
+      "upper_material",
+      "vegan",
+      "lined",
+      "resole_friendly"
+    ],
+    "fit": [
+      "foot_width",
+      "foot_volume",
+      "toe_shape_best",
+      "heel_fit",
+      "instep_height",
+      "last_shape",
+      "profile",
+      "asymmetry",
+      "downturn"
+    ],
+    "scores_1_to_10": [
+      "aggressiveness_score_1_10",
+      "stiffness_score_1_10",
+      "sensitivity_score_1_10",
+      "support_score_1_10",
+      "comfort_score_1_10",
+      "durability_score_1_10"
+    ],
+    "rubber": [
+      "rubber_primary",
+      "rubber_secondary",
+      "rubber_thickness_mm"
+    ],
+    "best_use_flags": [
+      "best_indoor_bouldering",
+      "best_outdoor_bouldering",
+      "best_indoor_sport",
+      "best_outdoor_sport",
+      "best_trad",
+      "best_multipitch",
+      "best_gym_training",
+      "best_competition",
+      "best_edging",
+      "best_smearing",
+      "best_cracks",
+      "best_overhang",
+      "best_vertical",
+      "best_slab"
+    ],
+    "skill_flags": [
+      "skill_beginner",
+      "skill_intermediate",
+      "skill_advanced",
+      "skill_expert"
+    ],
+    "sizing": [
+      "comfort_fit_offset_eu",
+      "performance_fit_offset_eu",
+      "aggressive_fit_offset_eu"
+    ],
+    "commercial": [
+      "price_band",
+      "availability_status"
+    ],
+    "content": [
+      "data_confidence",
+      "fit_notes",
+      "pros",
+      "cons",
+      "app_summary"
+    ]
+  },
+  "allowed_values": {
+    "foot_width": [
+      "narrow",
+      "medium",
+      "medium-wide",
+      "wide"
+    ],
+    "foot_volume": [
+      "low",
+      "low-medium",
+      "medium",
+      "medium-high",
+      "high"
+    ],
+    "toe_shape": [
+      "egyptian",
+      "greek",
+      "roman-square",
+      "unknown"
+    ],
+    "fit_preference": [
+      "comfort",
+      "performance",
+      "aggressive"
+    ],
+    "shoe_character": [
+      "soft_friction",
+      "stiff_edging",
+      "balanced",
+      "not_sure"
+    ],
+    "primary_use": [
+      "indoor_bouldering",
+      "outdoor_bouldering",
+      "indoor_sport",
+      "outdoor_sport",
+      "trad",
+      "multipitch",
+      "gym_training",
+      "competition",
+      "all_round"
+    ],
+    "terrain": [
+      "small_edges",
+      "volumes_slabs",
+      "overhangs",
+      "cracks",
+      "vertical",
+      "slab",
+      "all_round"
+    ],
+    "price_band": [
+      "budget",
+      "mid",
+      "premium",
+      "luxury"
+    ]
+  },
+  "recommendation_algorithm": {
+    "type": "rule_based_weighted_scoring",
+    "score_range": "0-100 after normalization",
+    "logic": [
+      "Start each shoe with score = 0.",
+      "Add points for matching use case, foot shape, fit preference, skill level, terrain and shoe character.",
+      "Subtract points for strong mismatches, for example very aggressive shoes for beginners or stiff shoes when the user asks for soft friction.",
+      "Normalize final score to 100.",
+      "Return top 3-5 shoes with explanations based on the matched rules."
+    ],
+    "rules": [
+      {
+        "id": "level_beginner",
+        "if": {
+          "climbing_level": "beginner",
+          "shoe_field": "skill_beginner",
+          "equals": true
+        },
+        "points": 12,
+        "explain": "Beginner-friendly shoes are more comfortable and forgiving."
+      },
+      {
+        "id": "indoor_bouldering",
+        "if": {
+          "primary_use": "indoor_bouldering",
+          "shoe_field": "best_indoor_bouldering",
+          "equals": true
+        },
+        "points": 12,
+        "explain": "Matches indoor bouldering use."
+      },
+      {
+        "id": "outdoor_bouldering",
+        "if": {
+          "primary_use": "outdoor_bouldering",
+          "shoe_field": "best_outdoor_bouldering",
+          "equals": true
+        },
+        "points": 12,
+        "explain": "Matches outdoor bouldering use."
+      },
+      {
+        "id": "sport_climbing",
+        "if": {
+          "primary_use_any": [
+            "indoor_sport",
+            "outdoor_sport"
+          ],
+          "shoe_field_any": [
+            "best_indoor_sport",
+            "best_outdoor_sport"
+          ]
+        },
+        "points": 12,
+        "explain": "Matches sport climbing use."
+      },
+      {
+        "id": "multipitch",
+        "if": {
+          "primary_use": "multipitch",
+          "shoe_field": "best_multipitch",
+          "equals": true
+        },
+        "points": 14,
+        "explain": "Multipitch shoes need comfort and support for long routes."
+      },
+      {
+        "id": "soft_friction",
+        "if": {
+          "shoe_character": "soft_friction",
+          "shoe_field": "sensitivity_score_1_10",
+          "min": 7
+        },
+        "points": 10,
+        "explain": "Soft sensitive shoes give better friction and feedback."
+      },
+      {
+        "id": "stiff_edging",
+        "if": {
+          "shoe_character": "stiff_edging",
+          "shoe_field": "stiffness_score_1_10",
+          "min": 7
+        },
+        "points": 10,
+        "explain": "Stiffer shoes support small edges better."
+      },
+      {
+        "id": "balanced",
+        "if": {
+          "shoe_character": "balanced",
+          "shoe_field_ranges": {
+            "stiffness_score_1_10": [
+              5,
+              8
+            ],
+            "sensitivity_score_1_10": [
+              5,
+              8
+            ]
+          }
+        },
+        "points": 10,
+        "explain": "Balanced shoes work across more terrain."
+      },
+      {
+        "id": "foot_width",
+        "if": {
+          "user_field": "foot_width",
+          "shoe_field": "foot_width",
+          "match": "exact_or_adjacent"
+        },
+        "points_exact": 10,
+        "points_adjacent": 5,
+        "penalty_mismatch": -10,
+        "explain": "Better chance of a good fit for your foot width."
+      },
+      {
+        "id": "foot_volume",
+        "if": {
+          "user_field": "foot_volume",
+          "shoe_field": "foot_volume",
+          "match": "exact_or_adjacent"
+        },
+        "points_exact": 8,
+        "points_adjacent": 4,
+        "penalty_mismatch": -8,
+        "explain": "Volume match reduces dead space or pressure."
+      },
+      {
+        "id": "comfort_priority",
+        "if": {
+          "fit_preference": "comfort",
+          "shoe_field": "comfort_score_1_10",
+          "min": 7
+        },
+        "points": 10,
+        "penalty_if_aggressiveness_above_8": -6,
+        "explain": "Comfort-focused shoes suit longer sessions and beginners."
+      },
+      {
+        "id": "performance_priority",
+        "if": {
+          "fit_preference": "performance",
+          "shoe_field": "aggressiveness_score_1_10",
+          "min": 6
+        },
+        "points": 8,
+        "explain": "Performance fit gives more power and precision."
+      },
+      {
+        "id": "small_edges",
+        "if": {
+          "terrain_contains": "small_edges",
+          "shoe_field": "best_edging",
+          "equals": true
+        },
+        "points": 10,
+        "explain": "Good option for small footholds and technical edging."
+      },
+      {
+        "id": "volumes_slabs",
+        "if": {
+          "terrain_contains": "volumes_slabs",
+          "shoe_field": "best_smearing",
+          "equals": true
+        },
+        "points": 10,
+        "explain": "Good option for slabs, volumes and friction moves."
+      },
+      {
+        "id": "budget",
+        "if": {
+          "user_field": "budget_band",
+          "shoe_field": "price_band",
+          "match": "same_or_lower"
+        },
+        "points": 6,
+        "penalty_mismatch": -5,
+        "explain": "Fits your budget preference."
+      }
+    ]
+  },
+  "sample_shoe_record": {
+    "shoe_id": "scarpa-instinct-vsr",
+    "brand": "Scarpa",
+    "model": "Instinct VSR",
+    "foot_width": "medium-wide",
+    "foot_volume": "medium",
+    "profile": "aggressive",
+    "aggressiveness_score_1_10": 8,
+    "stiffness_score_1_10": 5,
+    "sensitivity_score_1_10": 8,
+    "rubber_primary": "Vibram XS Grip 2",
+    "best_indoor_bouldering": true,
+    "best_outdoor_bouldering": true,
+    "best_indoor_sport": true,
+    "best_outdoor_sport": true,
+    "skill_beginner": false,
+    "skill_intermediate": true,
+    "skill_advanced": true,
+    "comfort_fit_offset_eu": -1.0,
+    "performance_fit_offset_eu": -1.5,
+    "aggressive_fit_offset_eu": -2.0,
+    "app_summary": "Balanced aggressive shoe for bouldering and sport climbing."
+  },
+  "sizing_output_template": {
+    "warning": "Sizing is a try-on range, not a guaranteed exact size.",
+    "formula": {
+      "comfort_starting_size": "street_size_eu + comfort_fit_offset_eu",
+      "performance_starting_size": "street_size_eu + performance_fit_offset_eu",
+      "aggressive_starting_size": "street_size_eu + aggressive_fit_offset_eu"
+    }
+  }
+}
