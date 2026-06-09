@@ -7,3 +7,4 @@ build/
 *.log
 data/*.local.json
 data/*.export.json
+.vercel
