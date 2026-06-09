@@ -15,6 +15,8 @@ alter table public.shoes enable row level security;
 revoke all on table public.shoes from anon;
 revoke all on table public.shoes from authenticated;
 
+grant select, insert, update, delete on table public.shoes to service_role;
+
 create index if not exists shoes_brand_model_idx on public.shoes (brand, model);
 create index if not exists shoes_official_data_gin_idx on public.shoes using gin (official_data);
 create index if not exists shoes_advisor_fit_notes_gin_idx on public.shoes using gin (advisor_fit_notes);
