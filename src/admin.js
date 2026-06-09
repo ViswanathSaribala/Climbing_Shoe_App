@@ -45,6 +45,12 @@ async function api(path, options = {}) {
       ...(options.headers || {})
     }
   });
+
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error("The admin API returned HTML instead of JSON. Open this page through Vercel local dev or a Vercel deployment, not GitHub Pages, file://, or a static server.");
+  }
+
   const payload = await response.json();
   if (!response.ok) throw new Error(payload.error || "Request failed.");
   return payload;
