@@ -111,7 +111,7 @@ npm install
 Run with Vercel's local dev server:
 
 ```bash
-npm run dev
+npm run local
 ```
 
 Open:
