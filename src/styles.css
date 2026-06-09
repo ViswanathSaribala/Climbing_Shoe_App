@@ -518,6 +518,11 @@ dialog::backdrop {
   padding: 16px;
 }
 
+.wide-action {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
 .shoe-list {
   display: grid;
   gap: 8px;

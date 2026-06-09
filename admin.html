@@ -27,6 +27,7 @@
 
       <section class="admin-workspace" id="admin-workspace" hidden>
         <aside class="shoe-sidebar">
+          <button id="add-shoe" type="button" class="wide-action">Add Shoe</button>
           <label>
             Search
             <input id="shoe-search" type="search" placeholder="Brand or model" />
@@ -39,15 +40,119 @@
           <form id="shoe-editor" hidden>
             <div class="editor-title">
               <div>
-                <p class="eyebrow">Selected Shoe</p>
+                <p class="eyebrow" id="editor-mode-label">Selected Shoe</p>
                 <h2 id="editor-heading"></h2>
               </div>
-              <button type="submit">Save Notes</button>
+              <button type="submit" id="save-shoe">Save Notes</button>
             </div>
 
             <section class="official-card">
               <h3>Official Data</h3>
               <dl id="official-data" class="official-grid"></dl>
+            </section>
+
+            <section class="official-card" id="official-editor" hidden>
+              <h3>Official Data Entry</h3>
+              <div class="control-grid">
+                <label>
+                  Brand
+                  <input name="brand" type="text" placeholder="Scarpa" />
+                </label>
+                <label>
+                  Model
+                  <input name="model" type="text" placeholder="Instinct VSR" />
+                </label>
+                <label>
+                  Gender fit
+                  <input name="gender_fit" type="text" placeholder="Unisex, Men/Women, LV" />
+                </label>
+                <label>
+                  Closure
+                  <input name="closure" type="text" placeholder="Lace, Slipper, Hook-and-loop" />
+                </label>
+                <label>
+                  Rubber
+                  <input name="rubber_primary" type="text" placeholder="Vibram XS Grip2" />
+                </label>
+                <label>
+                  Rubber thickness mm
+                  <input name="rubber_thickness_mm" type="number" step="0.1" />
+                </label>
+                <label>
+                  Profile
+                  <input name="profile" type="text" placeholder="Flat, moderate, aggressive" />
+                </label>
+                <label>
+                  Asymmetry
+                  <input name="asymmetry" type="text" placeholder="Low, medium, high" />
+                </label>
+                <label>
+                  Stiffness 1-5
+                  <input name="stiffness" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Sensitivity 1-5
+                  <input name="sensitivity" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Support 1-5
+                  <input name="support" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Official confidence
+                  <select name="official_confidence">
+                    <option value="unknown">Unknown</option>
+                    <option value="official">Official</option>
+                    <option value="researched">Researched</option>
+                    <option value="estimated">Estimated</option>
+                  </select>
+                </label>
+                <label>
+                  Bouldering 1-5
+                  <input name="bouldering" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Sport 1-5
+                  <input name="sport" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Indoor 1-5
+                  <input name="indoor" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Outdoor 1-5
+                  <input name="outdoor" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Trad 1-5
+                  <input name="trad" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Multipitch 1-5
+                  <input name="multipitch" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Beginner 1-5
+                  <input name="beginner" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Intermediate 1-5
+                  <input name="intermediate" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Advanced 1-5
+                  <input name="advanced" type="number" min="0" max="5" step="1" />
+                </label>
+                <label>
+                  Product URL
+                  <input name="product_url" type="url" placeholder="https://..." />
+                </label>
+              </div>
+
+              <label class="full-field">
+                Official notes
+                <textarea name="official_notes" rows="4" placeholder="Summarize official product description or specs..."></textarea>
+              </label>
             </section>
 
             <section class="official-card">

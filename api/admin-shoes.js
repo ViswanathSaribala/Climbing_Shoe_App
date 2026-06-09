@@ -1,5 +1,9 @@
 const { getSupabase, json, requireAdmin } = require("./_lib");
 
+function slugify(value) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 module.exports = async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
 
@@ -15,6 +19,30 @@ module.exports = async function handler(req, res) {
 
       if (error) throw error;
       return json(res, 200, { shoes: data || [] });
+    }
+
+    if (req.method === "POST") {
+      const { brand, model, official_data, advisor_fit_notes } = req.body || {};
+      if (!brand || !model || !official_data || !advisor_fit_notes) {
+        return json(res, 400, { error: "Missing brand, model, official_data, or advisor_fit_notes." });
+      }
+
+      const row = {
+        id: req.body.id || slugify(`${brand}-${model}`),
+        brand,
+        model,
+        official_data,
+        advisor_fit_notes
+      };
+
+      const { data, error } = await supabase
+        .from("shoes")
+        .insert(row)
+        .select("id, brand, model, official_data, advisor_fit_notes")
+        .single();
+
+      if (error) throw error;
+      return json(res, 201, { shoe: data });
     }
 
     if (req.method === "PUT") {
