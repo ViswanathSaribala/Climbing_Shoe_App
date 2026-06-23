@@ -10,10 +10,12 @@ The current version uses a public browser UI, private Supabase database, and Ver
 - Climbing style and experience inputs
 - Soft, stiff, or balanced shoe preference
 - Comfort, performance, or aggressive fit preference
+- Illustrated toe-shape selector
+- Leather, synthetic, or vegan construction preference
 - Rule-based recommendation scoring
 - Top shoe matches with explanations
 - Suggested starting size based on street shoe size
-- Protected admin editor for advisor fit notes
+- Protected Supabase database manager for adding and fully editing shoes
 - Responsive layout for desktop and mobile browsers
 
 ## Project Structure
@@ -99,6 +101,18 @@ npm run import:shoes
 ```
 
 This imports the local shoes into the private Supabase `shoes` table.
+
+## Sync Official Brand Catalogues
+
+The catalogue sync reads current official manufacturer product pages and upserts
+official product data without replacing existing advisor fit notes:
+
+```bash
+npm run sync:catalogs
+```
+
+The current sync includes Evolv and Tenaya. Product facts that are not published
+by the manufacturer remain `unknown` instead of being estimated.
 
 ## Run Locally With APIs
 

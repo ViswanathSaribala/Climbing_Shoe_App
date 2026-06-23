@@ -45,18 +45,93 @@
                 </select>
               </label>
               <label>
-                Toe shape
-                <select name="toeShape">
-                  <option value="egyptian">Egyptian</option>
-                  <option value="greek">Greek</option>
-                  <option value="roman-square">Roman / square</option>
-                  <option value="unknown">Not sure</option>
-                </select>
-              </label>
-              <label>
                 Street shoe size (EU)
                 <input name="streetSize" type="number" min="30" max="52" step="0.5" value="42" />
               </label>
+            </div>
+            <div class="foot-shape-field">
+              <div class="field-heading">
+                <span class="field-label">Which shape looks most like your foot?</span>
+                <span class="optional-label">Approximate is fine</span>
+              </div>
+              <p class="field-help">Look at the relative length of your first three toes.</p>
+              <div class="foot-shape-options">
+                <label class="foot-shape-option">
+                  <input type="radio" name="toeShape" value="egyptian" checked />
+                  <span class="selection-check" aria-hidden="true">✓</span>
+                  <span class="foot-illustration egyptian-foot" aria-hidden="true">
+                    <svg class="toe-profile" viewBox="0 0 100 44">
+                      <path d="M8 7 L29 12 L49 19 L68 27 L87 35"></path>
+                      <circle cx="8" cy="7" r="3"></circle>
+                      <circle cx="29" cy="12" r="3"></circle>
+                      <circle cx="49" cy="19" r="3"></circle>
+                      <circle cx="68" cy="27" r="3"></circle>
+                      <circle cx="87" cy="35" r="3"></circle>
+                    </svg>
+                    <span class="toe-row">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                    <span class="foot-body"></span>
+                  </span>
+                  <span class="foot-option-copy">
+                    <strong>Egyptian</strong>
+                    <small>Downward slope</small>
+                  </span>
+                </label>
+                <label class="foot-shape-option">
+                  <input type="radio" name="toeShape" value="greek" />
+                  <span class="selection-check" aria-hidden="true">✓</span>
+                  <span class="foot-illustration greek-foot" aria-hidden="true">
+                    <svg class="toe-profile" viewBox="0 0 100 44">
+                      <path d="M8 17 L29 5 L49 20 L68 28 L87 35"></path>
+                      <circle cx="8" cy="17" r="3"></circle>
+                      <circle cx="29" cy="5" r="3"></circle>
+                      <circle cx="49" cy="20" r="3"></circle>
+                      <circle cx="68" cy="28" r="3"></circle>
+                      <circle cx="87" cy="35" r="3"></circle>
+                    </svg>
+                    <span class="toe-row">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                    <span class="foot-body"></span>
+                  </span>
+                  <span class="foot-option-copy">
+                    <strong>Greek</strong>
+                    <small>Second-toe peak</small>
+                  </span>
+                </label>
+                <label class="foot-shape-option">
+                  <input type="radio" name="toeShape" value="roman-square" />
+                  <span class="selection-check" aria-hidden="true">✓</span>
+                  <span class="foot-illustration roman-foot" aria-hidden="true">
+                    <svg class="toe-profile" viewBox="0 0 100 44">
+                      <path d="M8 8 L29 8 L49 9 L68 22 L87 32"></path>
+                      <circle cx="8" cy="8" r="3"></circle>
+                      <circle cx="29" cy="8" r="3"></circle>
+                      <circle cx="49" cy="9" r="3"></circle>
+                      <circle cx="68" cy="22" r="3"></circle>
+                      <circle cx="87" cy="32" r="3"></circle>
+                    </svg>
+                    <span class="toe-row">
+                      <i></i><i></i><i></i><i></i><i></i>
+                    </span>
+                    <span class="foot-body"></span>
+                  </span>
+                  <span class="foot-option-copy">
+                    <strong>Roman</strong>
+                    <small>Flat toe line</small>
+                  </span>
+                </label>
+                <label class="foot-shape-option">
+                  <input type="radio" name="toeShape" value="unknown" />
+                  <span class="selection-check" aria-hidden="true">✓</span>
+                  <span class="unknown-illustration" aria-hidden="true">?</span>
+                  <span class="foot-option-copy">
+                    <strong>Not sure</strong>
+                    <small>Skip this detail</small>
+                  </span>
+                </label>
+              </div>
             </div>
           </fieldset>
 
@@ -96,6 +171,15 @@
                   <option value="performance">Performance</option>
                   <option value="comfort">Comfort</option>
                   <option value="aggressive">Aggressive</option>
+                </select>
+              </label>
+              <label>
+                Upper material / ethics
+                <select name="materialPreference">
+                  <option value="any">Any material</option>
+                  <option value="leather">Leather</option>
+                  <option value="synthetic">Synthetic</option>
+                  <option value="vegan">Vegan only</option>
                 </select>
               </label>
             </div>

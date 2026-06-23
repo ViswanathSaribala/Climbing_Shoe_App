@@ -41,6 +41,18 @@ Use official brand sources for:
 - Product URL
 - Official product notes
 
+For material classification, use:
+
+- `leather`
+- `synthetic_leather`
+- `vegan_materials`
+- `mixed`
+- `other`
+- `unknown`
+
+Only mark `vegan: true` when the manufacturer explicitly identifies the shoe as
+vegan.
+
 Set `official_confidence` to:
 
 - `official`: verified from the brand page or brand catalog
@@ -79,6 +91,10 @@ Use `needs_validation: true` until the fit notes are backed by testing, reliable
 6. Add advisor fit notes in the form.
 7. Mark fit confidence honestly.
 8. Keep `needs_validation: true` for any shoe that has not been tested.
+
+The database manager also lets you add and update brand, model, construction,
+performance scores, intended use, official source, and confidence fields. Saving
+an existing shoe updates the complete record in Supabase.
 
 ## Why This Matters
 

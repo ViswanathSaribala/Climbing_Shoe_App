@@ -22,7 +22,7 @@ function renderError(message) {
 
 function renderResults(recommendations) {
   if (!recommendations.length) {
-    renderError("No recommendations were returned. Check that the database has shoes loaded.");
+    renderError("No shoes match all selected filters yet. Try another material choice or add more verified shoe data.");
     return;
   }
 
@@ -44,6 +44,7 @@ function renderResults(recommendations) {
           <div><dt>Fit</dt><dd>${shoe.fit_width}, ${shoe.fit_volume}</dd></div>
           <div><dt>Feel</dt><dd>Stiff ${shoe.stiffness}/5 · Sensitive ${shoe.sensitivity}/5</dd></div>
           <div><dt>Size start</dt><dd>${shoe.size_start}</dd></div>
+          <div><dt>Material</dt><dd>${shoe.material_category === "unknown" ? "Not recorded" : shoe.material_category.replaceAll("_", " ")}${shoe.vegan === true ? " · Verified vegan" : ""}</dd></div>
         </dl>
         <p class="advisor-note">${shoe.advisor_summary}</p>
         <div class="source-strip">
