@@ -74,6 +74,12 @@ function normalizeShoe(shoe) {
   const skill = official.skill_scores_1_to_5 || {};
   const shape = official.shape || {};
   const rubber = official.rubber || {};
+  const construction = official.construction || {};
+  const materialCategory = construction.material_category
+    || (construction.vegan === true ? "vegan_materials" : null)
+    || (String(construction.upper_material || "").toLowerCase().includes("synthetic") ? "synthetic_leather" : null)
+    || (String(construction.upper_material || "").toLowerCase().includes("leather") ? "leather" : null)
+    || "unknown";
 
   return {
     id: shoe.id,
@@ -82,6 +88,9 @@ function normalizeShoe(shoe) {
     gender_fit: official.gender_fit || "",
     closure: official.closure || "",
     rubber_type: rubber.primary || "",
+    upperMaterial: String(construction.upper_material || "unknown").toLowerCase(),
+    materialCategory,
+    vegan: construction.vegan ?? null,
     profile: shape.profile || "",
     asymmetry: shape.asymmetry || "",
     stiffness: performance.stiffness ?? 0,
@@ -220,6 +229,39 @@ function scoreShoe(rawShoe, prefs) {
     cautions.push("Likely too specialized for a first shoe.");
   }
 
+  if (prefs.materialPreference === "vegan") {
+    if (shoe.vegan === true) {
+      score += 16;
+      reasons.unshift("Verified vegan construction.");
+    } else if (shoe.vegan === false) {
+      score -= 30;
+      cautions.unshift("This shoe is not vegan.");
+    } else {
+      score -= 12;
+      cautions.unshift("Vegan status has not been verified.");
+    }
+  }
+
+  if (prefs.materialPreference === "leather") {
+    if (shoe.materialCategory === "leather" || shoe.materialCategory === "mixed") {
+      score += 12;
+      reasons.unshift("Leather upper matches your preference.");
+    } else if (shoe.upperMaterial !== "unknown") {
+      score -= 12;
+      cautions.unshift("Upper is not listed as leather.");
+    }
+  }
+
+  if (prefs.materialPreference === "synthetic") {
+    if (shoe.materialCategory === "synthetic_leather" || shoe.materialCategory === "mixed") {
+      score += 12;
+      reasons.unshift("Synthetic upper matches your preference.");
+    } else if (shoe.upperMaterial !== "unknown") {
+      score -= 12;
+      cautions.unshift("Upper is not listed as synthetic.");
+    }
+  }
+
   return {
     shoe,
     score: Math.max(0, Math.round(score)),
@@ -243,6 +285,9 @@ function publicRecommendation(match, maxScore, prefs) {
     match_score: score,
     profile: shoe.profile,
     rubber_type: shoe.rubber_type,
+    upper_material: shoe.upperMaterial,
+    material_category: shoe.materialCategory,
+    vegan: shoe.vegan,
     fit_width: shoe.fitWidth,
     fit_volume: shoe.fitVolume,
     stiffness: shoe.stiffness,

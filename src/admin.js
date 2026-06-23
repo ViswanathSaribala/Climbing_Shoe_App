@@ -59,6 +59,7 @@ async function api(path, options = {}) {
 function flatOfficialRows(shoe) {
   const official = shoe.official_data || {};
   const rubber = official.rubber || {};
+  const construction = official.construction || {};
   const shape = official.shape || {};
   const performance = official.performance_scores_1_to_5 || {};
   const use = official.use_scores_1_to_5 || {};
@@ -68,6 +69,8 @@ function flatOfficialRows(shoe) {
     ["Closure", official.closure],
     ["Gender fit", official.gender_fit],
     ["Rubber", rubber.primary],
+    ["Material", materialCategory(construction).replaceAll("_", " ")],
+    ["Vegan", construction.vegan === true ? "Yes" : construction.vegan === false ? "No" : "Unknown"],
     ["Profile", shape.profile],
     ["Asymmetry", shape.asymmetry],
     ["Stiff / Sensitive / Support", `${performance.stiffness}/5 · ${performance.sensitivity}/5 · ${performance.support}/5`],
@@ -101,9 +104,22 @@ function setCheckboxes(values = []) {
   });
 }
 
+function materialCategory(construction = {}) {
+  if (construction.material_category) return construction.material_category;
+  if (construction.vegan === true) return "vegan_materials";
+
+  const upper = String(construction.upper_material || "").toLowerCase();
+  if (upper.includes("synthetic")) return "synthetic_leather";
+  if (upper.includes("leather")) return "leather";
+  if (upper === "mixed") return "mixed";
+  if (upper && upper !== "unknown") return "other";
+  return "unknown";
+}
+
 function setOfficialForm(shoe = {}) {
   const official = shoe.official_data || {};
   const rubber = official.rubber || {};
+  const construction = official.construction || {};
   const shape = official.shape || {};
   const performance = official.performance_scores_1_to_5 || {};
   const use = official.use_scores_1_to_5 || {};
@@ -114,6 +130,9 @@ function setOfficialForm(shoe = {}) {
   editorForm.elements.gender_fit.value = official.gender_fit || "";
   editorForm.elements.closure.value = official.closure || "";
   editorForm.elements.rubber_primary.value = rubber.primary || "";
+  editorForm.elements.material_category.value = materialCategory(construction);
+  editorForm.elements.vegan.value = construction.vegan === true ? "yes" : construction.vegan === false ? "no" : "unknown";
+  editorForm.elements.lined.value = construction.lined === true ? "yes" : construction.lined === false ? "no" : "unknown";
   editorForm.elements.rubber_thickness_mm.value = rubber.thickness_mm ?? "";
   editorForm.elements.profile.value = shape.profile || "";
   editorForm.elements.asymmetry.value = shape.asymmetry || "";
@@ -143,8 +162,8 @@ function selectShoe(id) {
   const sizing = fit.sizing_offsets_eu || {};
   editorModeLabel.textContent = "Selected Shoe";
   editorHeading.textContent = `${selectedShoe.brand} ${selectedShoe.model}`;
-  saveShoeButton.textContent = "Save Notes";
-  officialEditor.hidden = true;
+  saveShoeButton.textContent = "Save Shoe";
+  officialEditor.hidden = false;
   officialData.innerHTML = flatOfficialRows(selectedShoe).map(([label, value]) => `
     <div>
       <dt>${label}</dt>
@@ -200,6 +219,12 @@ function numberOrZero(value) {
   return value === "" ? 0 : Number(value);
 }
 
+function nullableBoolean(value) {
+  if (value === "yes") return true;
+  if (value === "no") return false;
+  return null;
+}
+
 function formToFitNotes() {
   const data = new FormData(editorForm);
   const toeShapes = data.getAll("toe_shape_fit");
@@ -222,6 +247,11 @@ function formToFitNotes() {
 
 function formToOfficialData() {
   const data = new FormData(editorForm);
+  const materialCategory = data.get("material_category");
+  const vegan = materialCategory === "vegan_materials"
+    ? true
+    : nullableBoolean(data.get("vegan"));
+
   return {
     gender_fit: data.get("gender_fit").trim(),
     closure: data.get("closure").trim(),
@@ -230,9 +260,14 @@ function formToOfficialData() {
       thickness_mm: numberOrNull(data.get("rubber_thickness_mm"))
     },
     construction: {
-      upper_material: "",
-      vegan: null,
-      lined: null
+      material_category: materialCategory,
+      upper_material: materialCategory === "synthetic_leather"
+        ? "synthetic leather"
+        : materialCategory === "vegan_materials"
+          ? "vegan materials"
+          : materialCategory,
+      vegan,
+      lined: nullableBoolean(data.get("lined"))
     },
     shape: {
       profile: data.get("profile").trim(),
@@ -324,17 +359,25 @@ editorForm.addEventListener("submit", async (event) => {
     }
 
     if (!selectedShoe) return;
+    if (!brand || !model) {
+      notify("Brand and model are required.");
+      return;
+    }
+
     const payload = await api("/api/admin-shoes", {
       method: "PUT",
       body: JSON.stringify({
         id: selectedShoe.id,
+        brand,
+        model,
+        official_data,
         advisor_fit_notes
       })
     });
     selectedShoe = payload.shoe;
     shoes = shoes.map((shoe) => shoe.id === selectedShoe.id ? selectedShoe : shoe);
     renderShoeList();
-    notify("Advisor notes saved.");
+    notify("Shoe updated in Supabase.");
   } catch (error) {
     notify(error.message);
   }

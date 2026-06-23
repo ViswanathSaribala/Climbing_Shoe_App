@@ -46,14 +46,14 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === "PUT") {
-      const { id, advisor_fit_notes } = req.body || {};
-      if (!id || !advisor_fit_notes) {
-        return json(res, 400, { error: "Missing id or advisor_fit_notes." });
+      const { id, brand, model, official_data, advisor_fit_notes } = req.body || {};
+      if (!id || !brand || !model || !official_data || !advisor_fit_notes) {
+        return json(res, 400, { error: "Missing id, brand, model, official_data, or advisor_fit_notes." });
       }
 
       const { data, error } = await supabase
         .from("shoes")
-        .update({ advisor_fit_notes, updated_at: new Date().toISOString() })
+        .update({ brand, model, official_data, advisor_fit_notes, updated_at: new Date().toISOString() })
         .eq("id", id)
         .select("id, brand, model, official_data, advisor_fit_notes")
         .single();

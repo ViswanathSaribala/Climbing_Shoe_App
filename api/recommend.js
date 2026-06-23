@@ -14,7 +14,21 @@ module.exports = async function handler(req, res) {
 
     if (error) throw error;
 
-    const matches = (data || [])
+    const eligibleShoes = (data || []).filter((shoe) => {
+      const construction = shoe.official_data?.construction || {};
+      const upper = String(construction.upper_material || "").toLowerCase();
+      const category = construction.material_category
+        || (construction.vegan === true ? "vegan_materials" : null)
+        || (upper.includes("synthetic") ? "synthetic_leather" : null)
+        || (upper.includes("leather") ? "leather" : null);
+
+      if (prefs.materialPreference === "vegan") return construction.vegan === true;
+      if (prefs.materialPreference === "leather") return category === "leather" || category === "mixed";
+      if (prefs.materialPreference === "synthetic") return category === "synthetic_leather" || category === "mixed";
+      return true;
+    });
+
+    const matches = eligibleShoes
       .map((shoe) => scoreShoe(shoe, prefs))
       .sort((a, b) => b.score - a.score)
       .slice(0, 5);

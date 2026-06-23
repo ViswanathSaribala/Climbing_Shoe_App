@@ -11,8 +11,8 @@
       <header class="admin-header">
         <div>
           <p class="eyebrow">Private Editor</p>
-          <h1>Advisor Fit Notes</h1>
-          <p>Review official shoe data and update your private advisor insights.</p>
+          <h1>Shoe Database Manager</h1>
+          <p>Add shoes and update both official product data and private advisor insights in Supabase.</p>
         </div>
         <a class="text-link" href="/">Advisor app</a>
       </header>
@@ -36,14 +36,14 @@
         </aside>
 
         <section class="editor-panel">
-          <div id="editor-empty" class="results-empty">Select a shoe to edit advisor notes.</div>
+          <div id="editor-empty" class="results-empty">Select a shoe to edit it, or add a new shoe.</div>
           <form id="shoe-editor" hidden>
             <div class="editor-title">
               <div>
                 <p class="eyebrow" id="editor-mode-label">Selected Shoe</p>
                 <h2 id="editor-heading"></h2>
               </div>
-              <button type="submit" id="save-shoe">Save Notes</button>
+              <button type="submit" id="save-shoe">Save Shoe</button>
             </div>
 
             <section class="official-card">
@@ -51,8 +51,8 @@
               <dl id="official-data" class="official-grid"></dl>
             </section>
 
-            <section class="official-card" id="official-editor" hidden>
-              <h3>Official Data Entry</h3>
+            <section class="official-card" id="official-editor">
+              <h3>Official Product Data</h3>
               <div class="control-grid">
                 <label>
                   Brand
@@ -73,6 +73,33 @@
                 <label>
                   Rubber
                   <input name="rubber_primary" type="text" placeholder="Vibram XS Grip2" />
+                </label>
+                <label>
+                  Shoe material
+                  <select name="material_category">
+                    <option value="unknown">Unknown</option>
+                    <option value="leather">Leather</option>
+                    <option value="synthetic_leather">Synthetic leather</option>
+                    <option value="vegan_materials">Vegan materials</option>
+                    <option value="mixed">Mixed materials</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+                <label>
+                  Vegan verification
+                  <select name="vegan">
+                    <option value="unknown">Unknown</option>
+                    <option value="yes">Verified vegan</option>
+                    <option value="no">Not vegan</option>
+                  </select>
+                </label>
+                <label>
+                  Lining
+                  <select name="lined">
+                    <option value="unknown">Unknown</option>
+                    <option value="yes">Lined</option>
+                    <option value="no">Unlined</option>
+                  </select>
                 </label>
                 <label>
                   Rubber thickness mm

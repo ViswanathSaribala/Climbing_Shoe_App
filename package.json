@@ -4,13 +4,15 @@
   "private": true,
   "description": "Private-database climbing shoe advisor with public recommendations and protected admin editing.",
   "scripts": {
-    "local": "vercel dev",
-    "import:shoes": "node scripts/import-shoes-to-supabase.js"
+    "local": "node scripts/local-server.js",
+    "local:vercel": "vercel dev",
+    "import:shoes": "node scripts/import-shoes-to-supabase.js",
+    "sync:catalogs": "node scripts/sync-official-catalogs.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1"
   },
   "devDependencies": {
-    "vercel": "^54.10.2"
+    "vercel": "^54.15.0"
   }
 }
