@@ -5,6 +5,117 @@ const dryRun = process.argv.includes("--dry-run");
 
 const catalogs = [
   {
+    brand: "Ocún",
+    baseUrl: "https://www.ocun.com",
+    products: [
+      ["Diamond S", "/product/diamond-s3"],
+      ["Sigma", "/product/sigma6"],
+      ["Fury", "/product/fury3"],
+      ["Ozone", "/product/ozone3"],
+      ["Ozone HV", "/product/ozone-hv3"],
+      ["Havoc", "/product/havoc3"],
+      ["Bullit", "/product/bullit3"],
+      ["Iris", "/product/iris3"],
+      ["Pearl 20th Anniversary", "/product/pearl-20th-anniversary3"],
+      ["Jett Crack", "/product/jett-crack3"],
+      ["Jett QC", "/product/jett-qc"],
+      ["Jett LU", "/product/jett-lu"],
+      ["Jett S", "/product/jett-s"],
+      ["Advancer QC", "/product/advancer-qc3"],
+      ["Advancer LU", "/product/advancer-lu3"],
+      ["Striker QC", "/product/striker-qc3"],
+      ["Striker LU", "/product/striker-lu3"],
+      ["Ribbit", "/product/ribbit3"],
+      ["Rental", "/product/rental4"]
+    ]
+  },
+  {
+    brand: "Mad Rock",
+    baseUrl: "https://madrock.com",
+    products: [
+      ["Remora Pro HV", "/products/remora-pro-hv"],
+      ["Remora Pro LV", "/products/remora-pro-lv"],
+      ["Villain", "/products/villain"],
+      ["D2.ONE LV", "/products/d2-one-lv"],
+      ["D2.ONE HV", "/products/d2-one-hv"],
+      ["Mad Monkey 3", "/products/mad-monkey-3"],
+      ["Shark 3 LV", "/products/shark-3-lv"],
+      ["Shark 3 HV", "/products/shark-3-0"],
+      ["Talaria HV", "/products/talaria-hv"],
+      ["Talaria LV", "/products/talaria-lv"],
+      ["Drone 2 LV", "/products/drone-2-0-lv"],
+      ["Drone 2 HV", "/products/drone-2-0-hv"],
+      ["Rover", "/products/rover"],
+      ["Drone CS LV", "/products/drone-cs-lv"],
+      ["Drone CS HV", "/products/drone-cs-hv"],
+      ["Remora LV", "/products/remora-lv"],
+      ["RedLine Strap", "/products/redline-strap"],
+      ["Remora HV", "/products/remora-hv"],
+      ["Phoenix", "/products/phoenix-2019"]
+    ]
+  },
+  {
+    brand: "Butora",
+    baseUrl: "https://butorausa.com",
+    products: [
+      ["Ibex", "/products/ibex"],
+      ["Habara Knit Rental Shoe", "/products/habara-knit-rental-shoe"],
+      ["Habara 3D Rental Shoe", "/products/habara-3d-rental-shoe"],
+      ["Habara Markless Rental Shoe", "/products/habara-5-5mm"],
+      ["Komet", "/products/komet"],
+      ["Rubicon", "/products/rubicon"],
+      ["Nix", "/products/nix"],
+      ["Sierra Climbing Shoe", "/products/sierra-climbing-shoe"],
+      ["Advance", "/products/advance-1"],
+      ["Endeavor 2.0", "/products/endeavor"],
+      ["Gomi", "/products/gomi-1"],
+      ["Acro Comp", "/products/acro-comp"],
+      ["Brava", "/products/brava-knit"],
+      ["Brava Markless Rental Shoe", "/products/brava-markless-rental-shoe"]
+    ]
+  },
+  {
+    brand: "Unparallel",
+    baseUrl: "https://www.unparallelsports.com",
+    products: [
+      ["UP-Grade Engage", "/product/up-grade-engage/"],
+      ["Hold Up VCS Slipper", "/product/hold-up-vcs-slipper/"],
+      ["UP Link W", "/product/up-link-w/"],
+      ["Dust Up W", "/product/dust-up-w/"],
+      ["UP Duel", "/product/up-duel/"],
+      ["Hold Up Engage", "/product/hold-up-engage/"],
+      ["UP Mocc", "/product/up-mocc/"],
+      ["UP Mocc Yellow", "/product/up-mocc-yellow/"],
+      ["Vim", "/product/vim/"],
+      ["TN Pro", "/product/tn-pro/"],
+      ["TN Pro LV", "/product/tn-pro-lv/"],
+      ["Flagship", "/product/flagship/"],
+      ["Flagship Women LV", "/product/flagship-women-lv/"],
+      ["Flagship Pro", "/product/flagship-pro/"],
+      ["Flagship Pro LV", "/product/flagship-pro-lv/"],
+      ["Sirius", "/product/sirius/"],
+      ["Sirius LV", "/product/sirius-lv/"],
+      ["UP Pivot", "/product/up-pivot/"],
+      ["Regulus", "/product/regulus/"],
+      ["Regulus LV", "/product/regulus-lv/"],
+      ["Souped UP", "/product/souped-up/"],
+      ["Qubit", "/product/qubit/"],
+      ["Qubit LV", "/product/qubit-lv/"],
+      ["UP Virtu LV", "/product/up-virtu-lv/"],
+      ["UP Virtu", "/product/up-virtu/"],
+      ["UP Lift", "/product/up-lift/"],
+      ["UP Beat 3", "/product/up-beat-3/"],
+      ["UP Lace", "/product/up-lace/"],
+      ["UP Lace LV", "/product/up-lace-lv/"],
+      ["UP Float", "/product/up-float/"],
+      ["TN Finity", "/product/tn-finity/"],
+      ["UP Rise VCS", "/product/up-rise-vcs/"],
+      ["UP Rise VCS LV", "/product/up-rise-vcs-lv/"],
+      ["UP Rise Pro", "/product/up-rise-pro/"],
+      ["Rock Guide", "/product/rock-guide/"]
+    ]
+  },
+  {
     brand: "Evolv",
     baseUrl: "https://www.evolvsports.com",
     products: [
@@ -197,10 +308,21 @@ function rubberName(outsole) {
     .trim();
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function fetchProduct(brand, model, url) {
-  const response = await fetch(url, {
-    headers: { "User-Agent": "ClimbingShoeAdvisor/1.0 official-catalog-sync" }
-  });
+  let response;
+  for (let attempt = 1; attempt <= 4; attempt += 1) {
+    response = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 ClimbingShoeAdvisor/1.0 official-catalog-sync" }
+    });
+
+    if (response.ok || ![429, 500, 502, 503, 504].includes(response.status) || attempt === 4) break;
+    await wait(attempt * 1500);
+  }
+
   if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
 
   const html = await response.text();
@@ -300,7 +422,7 @@ async function main() {
   );
 
   const failures = [];
-  const rows = (await mapWithConcurrency(products, 4, async (product) => {
+  const rows = (await mapWithConcurrency(products, 2, async (product) => {
     try {
       const row = await fetchProduct(product.brand, product.model, product.url);
       console.log(`Prepared ${product.brand} ${product.model}`);
